@@ -45,5 +45,5 @@ var allowedChars = runes{
 	LowerLetters: []rune("abcdefghijklmnopqrstuvwxyz"),
 	UpperLetters: []rune("ABCDEFGHIHJKLMNOPQRSTUVWXYZ"),
 	Specials:     []rune("~!@#$%^&*()_+-=|{}[]\\/';:"),
-	Digits:       []rune("01234567890"),
+	Digits:       []rune("0123456789"),
 }
