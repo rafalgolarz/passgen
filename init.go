@@ -54,9 +54,3 @@ func initDefaultURLParams(params *setting, config settings) {
 	params.MinUppercase = config["default"].MinUppercase
 	params.Results = config["default"].Results
 }
-
-func checkErr(err error) {
-	if err != nil {
-		log.Error(err)
-	}
-}

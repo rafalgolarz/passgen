@@ -40,13 +40,17 @@ func generatePassword(c *gin.Context) {
 	//check if params make sense (len>sum of allowed chars, etc)
 	//randomiser goes to another file
 
+	if checkParams(params) {
+
+	} else {
+
+	}
+
 	c.JSON(http.StatusOK, gin.H{"password configuration": params})
 	return
 }
 
 func main() {
-
-	println(config["default"].MinLength)
 
 	router := gin.Default()
 	v1 := router.Group("/v1")
