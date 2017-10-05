@@ -10,9 +10,8 @@ import (
 	"time"
 )
 
+// generate returns a password built based on passed requirements
 func generate(params setting) string {
-
-	var charsMix []rune
 
 	minLen := params.MinLength
 	minSpecials := params.MinSpecialCharacters
@@ -38,24 +37,28 @@ func generate(params setting) string {
 	allChars = append(allChars, allowedChars.LowerLetters...)
 	allChars = append(allChars, allowedChars.UpperLetters...)
 
+	var charsMix []rune
 	charsMix = append(charsMix, digits...)
 	charsMix = append(charsMix, specials...)
 	charsMix = append(charsMix, lowerLetters...)
 	charsMix = append(charsMix, upperLetters...)
 
 	log.Info("concatenated (pre-shuffled & pre-reviewed): ", string(charsMix), " [length: ", len(string(charsMix)), "]")
+
 	if minLen > passLen {
 		gapSize := int(minLen - passLen)
 		gap := make([]rune, gapSize)
+
 		for i := 0; i < gapSize; i++ {
 			gap[i] = allChars[rand.Intn(len(allChars))]
 		}
+
 		log.Info("gap: ", string(gap), " [length: ", len(string(gap)), "]")
 		charsMix = append(charsMix, gap...)
 		log.Info("with the gap: ", string(charsMix), " [length: ", len(string(charsMix)), "]")
 	}
 
-	log.Info("concatenated (pre shuffled): ", string(charsMix), " [length: ", len(string(charsMix)), "]")
+	log.Info("concatenated (pre-shuffled): ", string(charsMix), " [length: ", len(string(charsMix)), "]")
 
 	//shuffle
 	for i := range charsMix {
@@ -67,13 +70,15 @@ func generate(params setting) string {
 	return string(charsMix)
 }
 
-func randChars(count int, subset []rune) []rune {
-	res := make([]rune, count)
+// randCharts return a random combination of charts from []rune (a group of characters)
+// subsetLen defines the length of returned subset
+func randChars(subsetLen int, characters []rune) []rune {
+	res := make([]rune, subsetLen)
 
 	for i := range res {
-		res[i] = subset[rand.Intn(len(subset))]
+		res[i] = characters[rand.Intn(len(characters))]
 	}
 
-	log.Info("Select ", count, " chars from ", int(len(subset)), " characters: ", string(subset), " RESULT: ", string(res))
+	log.Info("Select ", subsetLen, " chars from ", int(len(characters)), " characters: ", string(characters), " RESULT: ", string(res))
 	return res
 }

@@ -37,6 +37,7 @@ func loadConfigFile() {
 	} else {
 		if _, err := toml.DecodeFile(configFile, &config); err != nil {
 			log.Error("Error parsing " + configFile)
+			//to consider: load defaultConfig in case of errors with the file
 		} else {
 			log.Info("Config file " + configFile + " loaded successfully")
 		}

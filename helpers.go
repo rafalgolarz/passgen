@@ -5,7 +5,7 @@
  */
 package main
 
-// checking if a combination of values makes sense
+// check if a combination of values makes sense
 func checkParams(params setting) bool {
 
 	minLen := params.MinLength
