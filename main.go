@@ -36,12 +36,9 @@ func generatePassword(c *gin.Context) {
 	err := c.BindQuery(&params)
 	checkErr(err)
 
-	//the whole logic will go here:
-	//check if params make sense (len>sum of allowed chars, etc)
-	//randomiser goes to another file
-
 	if checkParams(params) {
-		c.JSON(http.StatusOK, gin.H{"password configuration": params})
+		password := generate(params)
+		c.JSON(http.StatusOK, gin.H{"password": password})
 	} else {
 		c.JSON(http.StatusNotAcceptable,
 			gin.H{"status": "Incorrect password configuration",

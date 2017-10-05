@@ -24,6 +24,13 @@ type setting struct {
 
 type settings map[string]setting
 
+type runes struct {
+	LowerLetters []rune
+	UpperLetters []rune
+	Specials     []rune
+	Digits       []rune
+}
+
 //should match [default] settings in the config file (default: config.toml)
 var defaultConfig = setting{
 	MinLength:            8,
@@ -32,4 +39,11 @@ var defaultConfig = setting{
 	MinLowercase:         1,
 	MinUppercase:         1,
 	Results:              1,
+}
+
+var allowedChars = runes{
+	LowerLetters: []rune("abcdefghijklmnopqrstuvwxyz"),
+	UpperLetters: []rune("ABCDEFGHIHJKLMNOPQRSTUVWXYZ"),
+	Specials:     []rune("~!@#$%^&*()_+-=|{}[]\\/';:"),
+	Digits:       []rune("01234567890"),
 }
