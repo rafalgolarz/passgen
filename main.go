@@ -2,7 +2,7 @@
  * Secure passwords generator
  * sample calls:
 	 /v1/passwords returns a password based on default settings
-	 /v1/passwords/?min-length=12&special-chars=2&numbers=3&min-lower=1&min-upper=1&res=10
+	 /v1/passwords/?min-length=12&min-specials=3&min-digits=3&min-lowers=3&min-uppers=3&res=2
  * @author: rafal@rafalgolarz.com
  *
 */
@@ -32,7 +32,7 @@ func init() {
 func generatePassword(c *gin.Context) {
 
 	var params setting
-	initDefaultURLParams(&params, config)
+	initParams(&params, config)
 	err := c.BindQuery(&params)
 	checkErr(err)
 
@@ -41,12 +41,13 @@ func generatePassword(c *gin.Context) {
 	//randomiser goes to another file
 
 	if checkParams(params) {
-
+		c.JSON(http.StatusOK, gin.H{"password configuration": params})
 	} else {
-
+		c.JSON(http.StatusNotAcceptable,
+			gin.H{"status": "Incorrect password configuration",
+				"Minimum acceptable values of params": defaultConfig})
 	}
 
-	c.JSON(http.StatusOK, gin.H{"password configuration": params})
 	return
 }
 

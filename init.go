@@ -37,7 +37,6 @@ func loadConfigFile() {
 	} else {
 		if _, err := toml.DecodeFile(configFile, &config); err != nil {
 			log.Error("Error parsing " + configFile)
-			//TOCONSIDER: load default values from memory in case of missing file
 		} else {
 			log.Info("Config file " + configFile + " loaded successfully")
 		}
@@ -45,12 +44,12 @@ func loadConfigFile() {
 }
 
 // url params that are not passed, will be initialised with default config settings
-func initDefaultURLParams(params *setting, config settings) {
+func initParams(params *setting, config settings) {
 
-	params.MinLength = config["default"].MinLength
-	params.SpecialCharacters = config["default"].SpecialCharacters
-	params.Numbers = config["default"].Numbers
-	params.MinLowercase = config["default"].MinLowercase
-	params.MinUppercase = config["default"].MinUppercase
-	params.Results = config["default"].Results
+	params.MinLength = config[passwordType].MinLength
+	params.MinSpecialCharacters = config[passwordType].MinSpecialCharacters
+	params.MinDigits = config[passwordType].MinDigits
+	params.MinLowercase = config[passwordType].MinLowercase
+	params.MinUppercase = config[passwordType].MinUppercase
+	params.Results = config[passwordType].Results
 }

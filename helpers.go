@@ -5,13 +5,23 @@
  */
 package main
 
+// checking if a combination of values makes sense
 func checkParams(params setting) bool {
 
-	// minLen := params.MinLength
-	// specials := params.SpecialCharacters
-	// numbers := params.Numbers
-	// lowers := params.MinLowercase
-	// uppers := params.MinUppercase
+	minLen := params.MinLength
+	minSpecials := params.MinSpecialCharacters
+	minDigits := params.MinDigits
+	minLowers := params.MinLowercase
+	minUppers := params.MinUppercase
+
+	if minLen < absoluteMinLen ||
+		minDigits < config[passwordType].MinDigits ||
+		minLowers < config[passwordType].MinLowercase ||
+		minUppers < config[passwordType].MinUppercase ||
+		minSpecials < config[passwordType].MinSpecialCharacters {
+		return false
+	}
+
 	return true
 }
 

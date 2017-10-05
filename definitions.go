@@ -8,17 +8,28 @@ package main
 const (
 	configFile     = "config.toml"
 	defaultEnvPort = ":8080"
+	absoluteMinLen = 8
+	//passwortType refers to the section name in the configFile
+	passwordType = "default"
 )
 
-var defaultConfig settings
-
 type setting struct {
-	MinLength         uint8 `toml:"min_length" form:"min-length"`
-	SpecialCharacters uint8 `toml:"special_characters" form:"special-chars"`
-	Numbers           uint8 `toml:"numbers" form:"numbers"`
-	MinLowercase      uint8 `toml:"min_lowercase" form:"min-lower"`
-	MinUppercase      uint8 `toml:"min_uppercase" form:"min-upper"`
-	Results           uint8 `toml:"results" form:"res"`
+	MinLength            uint8 `toml:"min_length" form:"min-length"`
+	MinSpecialCharacters uint8 `toml:"min_special_characters" form:"min-specials"`
+	MinDigits            uint8 `toml:"min_digits" form:"min-digits"`
+	MinLowercase         uint8 `toml:"min_lowercase" form:"min-lowers"`
+	MinUppercase         uint8 `toml:"min_uppercase" form:"min-uppers"`
+	Results              uint8 `toml:"results" form:"res"`
 }
 
 type settings map[string]setting
+
+//should match [default] settings in the config file (default: config.toml)
+var defaultConfig = setting{
+	MinLength:            8,
+	MinSpecialCharacters: 2,
+	MinDigits:            2,
+	MinLowercase:         1,
+	MinUppercase:         1,
+	Results:              1,
+}
