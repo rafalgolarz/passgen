@@ -1,0 +1,15 @@
+[default]
+min_length = 8
+special_characters = 2
+numbers = 2
+min_lowercase = 1
+min_uppercase = 1
+results = 1
+
+[strong]
+min_length = 16
+special_characters = 4
+numbers = 4
+min_lowercase = 2
+min_uppercase = 2
+results = 1
