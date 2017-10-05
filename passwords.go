@@ -13,7 +13,6 @@ import (
 func generate(params setting) string {
 
 	var charsMix []rune
-	//charsMix := make([]rune, passLen)
 
 	minLen := params.MinLength
 	minSpecials := params.MinSpecialCharacters
@@ -46,8 +45,9 @@ func generate(params setting) string {
 
 	log.Info("concatenated (pre-shuffled & pre-reviewed): ", string(charsMix), " [length: ", len(string(charsMix)), "]")
 	if minLen > passLen {
-		gap := make([]rune, int(minLen-passLen))
-		for i := 0; i < int(minLen-passLen); i++ {
+		gapSize := int(minLen - passLen)
+		gap := make([]rune, gapSize)
+		for i := 0; i < gapSize; i++ {
 			gap[i] = allChars[rand.Intn(len(allChars))]
 		}
 		log.Info("gap: ", string(gap), " [length: ", len(string(gap)), "]")

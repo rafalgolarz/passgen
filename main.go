@@ -32,17 +32,31 @@ func init() {
 func generatePassword(c *gin.Context) {
 
 	var params setting
+
 	initParams(&params, config)
 	err := c.BindQuery(&params)
 	checkErr(err)
 
+	numberOfResults := int(params.Results)
+	passwords := make([]string, numberOfResults)
 	if checkParams(params) {
-		password := generate(params)
-		c.JSON(http.StatusOK, gin.H{"password": password})
+		for i := 0; i < numberOfResults; i++ {
+			passwords[i] = generate(params)
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"passwords":      passwords,
+			"status":         "Success",
+			"default_config": defaultConfig,
+			"applied_config": params})
 	} else {
+		log.Info("Incorrect password configuration")
 		c.JSON(http.StatusNotAcceptable,
-			gin.H{"status": "Incorrect password configuration",
-				"Minimum acceptable values of params": defaultConfig})
+			gin.H{
+				"passwords":      "",
+				"status":         "Incorrect params. Check if params meet default_config",
+				"default_config": defaultConfig,
+				"applied_config": params})
 	}
 
 	return
