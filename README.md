@@ -128,7 +128,7 @@ Once everything is up and running, you can access the API through kubectl proxy:
 
 ```!/bin/bash
 kubectl proxy
-```!/bin/bash
+```
 
 If you deployed it to the dev namespace, open the url for dev:
 <http://localhost:8001/api/v1/proxy/namespaces/dev/services/api-passgen:80/v1/passwords/>
