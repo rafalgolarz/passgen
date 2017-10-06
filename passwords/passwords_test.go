@@ -1,8 +1,13 @@
+/*
+ * Secure passwords generator
+ * @author: rafalgolarz.com
+ *
+ * $ go test -v ./... -bench=./...
+ */
 package passwords
 
 import "testing"
 
-//go test -bench=.
 func BenchmarkGenerator(b *testing.B) {
 	var defaultParams, strongParams, superStrong Setting
 	defaultParams.MinLength = 8
