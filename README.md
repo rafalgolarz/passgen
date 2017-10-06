@@ -1,3 +1,8 @@
+[![codebeat badge](https://codebeat.co/badges/3cadc60b-3642-46bc-9118-1595e354aa6d)](https://codebeat.co/projects/github-com-rafalgolarz-passgen)
+[![GoDoc](https://godoc.org/github.com/rafalgolarz/passgen?status.svg)](https://godoc.org/github.com/rafalgolarz/passgen)
+[![Go Walker](http://gowalker.org/api/v1/badge)](https://gowalker.org/github.com/rafalgolarz/passgen)
+
+
 # Passgen
 
 **API to generate secure passwords**
