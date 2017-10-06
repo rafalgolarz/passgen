@@ -9,6 +9,8 @@
 
 **API to generate secure passwords**
 
+[![asciicast](https://asciinema.org/a/n4WQig0gsDZlG48MGO2oV3kAE.png)](https://asciinema.org/a/n4WQig0gsDZlG48MGO2oV3kAE)
+
 ## Configurarion
 
 **config.toml** stores minimum default required settings for generated passwords
