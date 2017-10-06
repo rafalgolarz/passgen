@@ -35,13 +35,13 @@ func Generate(params Setting) string {
 	lowerLetters := randChars(int(minLowers), AllowedChars.LowerLetters)
 	upperLetters := randChars(int(minUppers), AllowedChars.UpperLetters)
 
-	var allChars []rune
+	var allChars CharsSet
 	allChars = append(allChars, AllowedChars.Specials...)
 	allChars = append(allChars, AllowedChars.Digits...)
 	allChars = append(allChars, AllowedChars.LowerLetters...)
 	allChars = append(allChars, AllowedChars.UpperLetters...)
 
-	var charsMix []rune
+	var charsMix CharsSet
 	charsMix = append(charsMix, digits...)
 	charsMix = append(charsMix, specials...)
 	charsMix = append(charsMix, lowerLetters...)
@@ -51,7 +51,7 @@ func Generate(params Setting) string {
 
 	if minLen > paramsLen {
 		gapSize := int(minLen - paramsLen)
-		gap := make([]rune, gapSize)
+		gap := make(CharsSet, gapSize)
 
 		for i := 0; i < gapSize; i++ {
 			gap[i] = allChars[rand.Intn(len(allChars))]
@@ -74,10 +74,10 @@ func Generate(params Setting) string {
 	return string(charsMix)
 }
 
-// randCharts return a random combination of charts from []rune (a group of characters)
+// randCharts return a random combination of charts from CharsSet (a group of characters)
 // subsetLen defines the length of returned subset
-func randChars(subsetLen int, characters []rune) []rune {
-	res := make([]rune, subsetLen)
+func randChars(subsetLen int, characters CharsSet) CharsSet {
+	res := make(CharsSet, subsetLen)
 
 	for i := range res {
 		res[i] = characters[rand.Intn(len(characters))]

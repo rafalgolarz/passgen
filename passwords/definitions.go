@@ -17,9 +17,13 @@ const (
 // uint8 is the set of all unsigned 8-bit integers. Range: 0 through 255. You won't need more...
 // uint16. Range: 0 through 65535. works really well on my machine.
 // uint32. Range: 0 through 4294967295 ...but this one may kill your memory
-
 type UnsignedInt uint8
 
+//CharsSet definition
+//rune as actualy an alias for the type int32
+type CharsSet []rune
+
+//Setting represents a structure used by both config file and url params
 type Setting struct {
 	MinLength            UnsignedInt `toml:"min_length" form:"min-length"`
 	MinSpecialCharacters UnsignedInt `toml:"min_special_characters" form:"min-specials"`
@@ -29,16 +33,17 @@ type Setting struct {
 	Results              UnsignedInt `toml:"results" form:"res"`
 }
 
+//Settings map a section name to settings
 type Settings map[string]Setting
 
 type runes struct {
-	LowerLetters []rune
-	UpperLetters []rune
-	Specials     []rune
-	Digits       []rune
+	LowerLetters CharsSet
+	UpperLetters CharsSet
+	Specials     CharsSet
+	Digits       CharsSet
 }
 
-//should match [default] settings in the config file (default: config.toml)
+//DefaultConfig should match [default] settings in the config file (default: config.toml)
 var DefaultConfig = Setting{
 	MinLength:            8,
 	MinSpecialCharacters: 2,
@@ -48,9 +53,10 @@ var DefaultConfig = Setting{
 	Results:              1,
 }
 
+//AllowedChars define acceptable chars used to generate passwords
 var AllowedChars = runes{
-	LowerLetters: []rune("abcdefghijklmnopqrstuvwxyz"),
-	UpperLetters: []rune("ABCDEFGHIHJKLMNOPQRSTUVWXYZ"),
-	Specials:     []rune("~!@#$%^&*()_+-=|{}[]\\/';:"),
-	Digits:       []rune("0123456789"),
+	LowerLetters: CharsSet("abcdefghijklmnopqrstuvwxyz"),
+	UpperLetters: CharsSet("ABCDEFGHIHJKLMNOPQRSTUVWXYZ"),
+	Specials:     CharsSet("~!@#$%^&*()_+-=|{}[]\\/';:"),
+	Digits:       CharsSet("0123456789"),
 }
