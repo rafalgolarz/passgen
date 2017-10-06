@@ -1,0 +1,26 @@
+# kuberenetes deployment for api-passgen
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: api-passgen-dev
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name: api-passgen-pods
+        env: dev
+    spec:
+      containers:
+      - image: rafalgolarz/passgen:dev
+        name: api-passgen
+        env:
+        - name: GIN_MODE
+          value: debug
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          name: http-server
