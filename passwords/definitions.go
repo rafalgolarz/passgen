@@ -8,17 +8,25 @@ package passwords
 const (
 	ConfigFile     = "passwords/config.toml"
 	AbsoluteMinLen = 8
-	//passwortType refers to the section name in the configFile
+	//PasswortType refers to the section name in the ConfigFile
 	PasswordType = "default"
 )
 
+// UnsignedInt type used to set limits of allowed vales for url params
+// Have fun experimenting
+// uint8 is the set of all unsigned 8-bit integers. Range: 0 through 255. You won't need more...
+// uint16. Range: 0 through 65535. works really well on my machine.
+// uint32. Range: 0 through 4294967295 ...but this one may kill your memory
+
+type UnsignedInt uint8
+
 type Setting struct {
-	MinLength            uint8 `toml:"min_length" form:"min-length"`
-	MinSpecialCharacters uint8 `toml:"min_special_characters" form:"min-specials"`
-	MinDigits            uint8 `toml:"min_digits" form:"min-digits"`
-	MinLowercase         uint8 `toml:"min_lowercase" form:"min-lowers"`
-	MinUppercase         uint8 `toml:"min_uppercase" form:"min-uppers"`
-	Results              uint8 `toml:"results" form:"res"`
+	MinLength            UnsignedInt `toml:"min_length" form:"min-length"`
+	MinSpecialCharacters UnsignedInt `toml:"min_special_characters" form:"min-specials"`
+	MinDigits            UnsignedInt `toml:"min_digits" form:"min-digits"`
+	MinLowercase         UnsignedInt `toml:"min_lowercase" form:"min-lowers"`
+	MinUppercase         UnsignedInt `toml:"min_uppercase" form:"min-uppers"`
+	Results              UnsignedInt `toml:"results" form:"res"`
 }
 
 type Settings map[string]Setting
