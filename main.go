@@ -3,7 +3,7 @@
  * sample calls:
 	 /v1/passwords returns a password based on default settings
 	 /v1/passwords/?min-length=12&min-specials=3&min-digits=3&min-lowers=3&min-uppers=3&res=2
- * @author: rafal@rafalgolarz.com
+ * @author: rafalgolarz.com
  *
 */
 package main
@@ -12,13 +12,14 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rafalgolarz/passgen/passwords"
 	"github.com/sirupsen/logrus"
 )
 
 var (
 	log    = logrus.New()
 	port   string
-	config settings
+	config passwords.Settings
 )
 
 func init() {
@@ -31,23 +32,23 @@ func init() {
 
 func generatePassword(c *gin.Context) {
 
-	var params setting
+	var params passwords.Setting
 
 	initParams(&params, config)
 	err := c.BindQuery(&params)
 	checkErr(err)
 
 	numberOfResults := int(params.Results)
-	passwords := make([]string, numberOfResults)
+	passwordsList := make([]string, numberOfResults)
 	if checkParams(params) {
 		for i := 0; i < numberOfResults; i++ {
-			passwords[i] = generate(params)
+			passwordsList[i] = passwords.Generate(params)
 		}
 
 		c.JSON(http.StatusOK, gin.H{
-			"passwords":      passwords,
+			"passwords":      passwordsList,
 			"status":         "Success",
-			"default_config": defaultConfig,
+			"default_config": passwords.DefaultConfig,
 			"applied_config": params})
 	} else {
 		log.Info("Incorrect password configuration")
@@ -55,7 +56,7 @@ func generatePassword(c *gin.Context) {
 			gin.H{
 				"passwords":      "",
 				"status":         "Incorrect params. Check if params meet default_config",
-				"default_config": defaultConfig,
+				"default_config": passwords.DefaultConfig,
 				"applied_config": params})
 	}
 

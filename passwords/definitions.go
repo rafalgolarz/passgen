@@ -1,19 +1,18 @@
 /*
  * Secure passwords generator
- * @author: rafal@rafalgolarz.com
+ * @author: rafalgolarz.com
  *
  */
-package main
+package passwords
 
 const (
-	configFile     = "config.toml"
-	defaultEnvPort = ":8080"
-	absoluteMinLen = 8
+	ConfigFile     = "passwords/config.toml"
+	AbsoluteMinLen = 8
 	//passwortType refers to the section name in the configFile
-	passwordType = "default"
+	PasswordType = "default"
 )
 
-type setting struct {
+type Setting struct {
 	MinLength            uint8 `toml:"min_length" form:"min-length"`
 	MinSpecialCharacters uint8 `toml:"min_special_characters" form:"min-specials"`
 	MinDigits            uint8 `toml:"min_digits" form:"min-digits"`
@@ -22,7 +21,7 @@ type setting struct {
 	Results              uint8 `toml:"results" form:"res"`
 }
 
-type settings map[string]setting
+type Settings map[string]Setting
 
 type runes struct {
 	LowerLetters []rune
@@ -32,7 +31,7 @@ type runes struct {
 }
 
 //should match [default] settings in the config file (default: config.toml)
-var defaultConfig = setting{
+var DefaultConfig = Setting{
 	MinLength:            8,
 	MinSpecialCharacters: 2,
 	MinDigits:            2,
@@ -41,7 +40,7 @@ var defaultConfig = setting{
 	Results:              1,
 }
 
-var allowedChars = runes{
+var AllowedChars = runes{
 	LowerLetters: []rune("abcdefghijklmnopqrstuvwxyz"),
 	UpperLetters: []rune("ABCDEFGHIHJKLMNOPQRSTUVWXYZ"),
 	Specials:     []rune("~!@#$%^&*()_+-=|{}[]\\/';:"),

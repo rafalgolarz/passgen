@@ -1,41 +1,45 @@
 /*
  * Secure passwords generator
- * @author: rafal@rafalgolarz.com
+ * @author: rafalgolarz.com
  *
  */
-package main
+package passwords
 
 import (
 	"math/rand"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
 
-// generate returns a password built based on passed requirements
-func generate(params setting) string {
+var log = logrus.New()
+
+// Generate returns a password built based on passed requirements
+func Generate(params Setting) string {
 
 	minLen := params.MinLength
 	minSpecials := params.MinSpecialCharacters
 	minDigits := params.MinDigits
 	minLowers := params.MinLowercase
 	minUppers := params.MinUppercase
-	passLen := minSpecials + minDigits + minLowers + minUppers
+	paramsLen := minSpecials + minDigits + minLowers + minUppers
 
 	// it may happen (and is allowed) that the number of required digits, specials,
 	// lowers, uppers is higher than the minimum length, then the new mininum is the sum of lenghts
-	log.Info("min required length: ", minLen, ", min length to be generated: ", passLen)
+	log.Info("min required length: ", minLen, ", lenth of the required params: ", paramsLen)
 
 	rand.Seed(time.Now().UTC().UnixNano())
 
-	specials := randChars(int(minSpecials), allowedChars.Specials)
-	digits := randChars(int(minDigits), allowedChars.Digits)
-	lowerLetters := randChars(int(minLowers), allowedChars.LowerLetters)
-	upperLetters := randChars(int(minUppers), allowedChars.UpperLetters)
+	specials := randChars(int(minSpecials), AllowedChars.Specials)
+	digits := randChars(int(minDigits), AllowedChars.Digits)
+	lowerLetters := randChars(int(minLowers), AllowedChars.LowerLetters)
+	upperLetters := randChars(int(minUppers), AllowedChars.UpperLetters)
 
 	var allChars []rune
-	allChars = append(allChars, allowedChars.Specials...)
-	allChars = append(allChars, allowedChars.Digits...)
-	allChars = append(allChars, allowedChars.LowerLetters...)
-	allChars = append(allChars, allowedChars.UpperLetters...)
+	allChars = append(allChars, AllowedChars.Specials...)
+	allChars = append(allChars, AllowedChars.Digits...)
+	allChars = append(allChars, AllowedChars.LowerLetters...)
+	allChars = append(allChars, AllowedChars.UpperLetters...)
 
 	var charsMix []rune
 	charsMix = append(charsMix, digits...)
@@ -45,8 +49,8 @@ func generate(params setting) string {
 
 	log.Info("concatenated (pre-shuffled & pre-reviewed): ", string(charsMix), " [length: ", len(string(charsMix)), "]")
 
-	if minLen > passLen {
-		gapSize := int(minLen - passLen)
+	if minLen > paramsLen {
+		gapSize := int(minLen - paramsLen)
 		gap := make([]rune, gapSize)
 
 		for i := 0; i < gapSize; i++ {

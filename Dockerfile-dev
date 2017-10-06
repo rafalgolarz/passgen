@@ -1,7 +1,8 @@
 FROM golang:1.9
-LABEL maintainer="rafal@rafalgolarz.com"
+LABEL maintainer="web@rafalgolarz.com"
 COPY *.go /go/src/github.com/rafalgolarz/passgen/
-COPY *.toml /go/src/github.com/rafalgolarz/passgen/
+COPY passwords/*.go /go/src/github.com/rafalgolarz/passgen/passwords/
+COPY passwords/*.toml /go/src/github.com/rafalgolarz/passgen/passwords/
 
 RUN go get github.com/gin-gonic/gin
 RUN go get github.com/sirupsen/logrus
