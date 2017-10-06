@@ -54,7 +54,7 @@ func generatePassword(c *gin.Context) {
 		log.Info("Incorrect password configuration")
 		c.JSON(http.StatusNotAcceptable,
 			gin.H{
-				"passwords":      "",
+				"passwords":      []string{},
 				"status":         "Incorrect params. Check if params meet default_config",
 				"default_config": passwords.DefaultConfig,
 				"applied_config": params})
