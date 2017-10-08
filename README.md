@@ -138,3 +138,9 @@ If you deployed it to the dev namespace, open the url for dev:
 
 If you deployed it to the production namespace, open the url for production:
 <http://localhost:8001/api/v1/proxy/namespaces/production/services/api-passgen:80/v1/passwords/>
+
+## TODO
+
+- [] allow passing the path to config.toml from the command line
+- [] display just array of passwords (hide configuration info) by setting a new boolean param verbose to false
+- [] add tests checking if the length of required subsets of characters match passed values
