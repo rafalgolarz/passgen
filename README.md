@@ -141,6 +141,6 @@ If you deployed it to the production namespace, open the url for production:
 
 ## TODO
 
-- [] allow passing the path to config.toml from the command line
-- [] display just array of passwords (hide configuration info) by setting a new boolean param verbose to false
-- [] add tests checking if the length of required subsets of characters match passed values
+- [ ] allow passing the path to config.toml from the command line
+- [ ] display just array of passwords (hide configuration info) by setting a new boolean param verbose to false
+- [ ] add tests checking if the length of required subsets of characters match passed values
