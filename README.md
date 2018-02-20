@@ -13,7 +13,7 @@
 
 ## Configurarion
 
-**config.toml** stores minimum default required settings for generated passwords
+**default.toml** stores minimum default required settings for generated passwords
 
 Currently it contains two sections: 
 
@@ -35,7 +35,7 @@ min_uppercase = 2
 results = 1
 ```
 
-You can choose which section should be loaded as default one, in **definitions.go**:
+You can choose which section should be loaded as default one, in **init.go**:
 
 ```toml
 passwordType = "default"

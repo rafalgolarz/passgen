@@ -1,19 +1,23 @@
-FROM golang:1.9
+FROM golang:1.10
 LABEL maintainer="web@rafalgolarz.com"
-COPY *.go /go/src/github.com/rafalgolarz/passgen/
-COPY passwords/*.go /go/src/github.com/rafalgolarz/passgen/passwords/
-COPY passwords/*.toml /go/src/github.com/rafalgolarz/passgen/passwords/
+FROM golang:1.10
+LABEL maintainer="web@rafalgolarz.com"
+COPY cmd/passgend/  /go/src/github.com/rafalgolarz/passgen/cmd/passgend/
+COPY pkg/  /go/src/github.com/rafalgolarz/passgen/pkg/
+COPY configs/  /go/src/github.com/rafalgolarz/passgen/configs/
+COPY vendor/ /go/src/
+WORKDIR /go/src/github.com/rafalgolarz/passgen/cmd/passgend
 
-RUN go get github.com/gin-gonic/gin
-RUN go get github.com/sirupsen/logrus
-RUN go get github.com/BurntSushi/toml
-WORKDIR /go/src/github.com/rafalgolarz/passgen
+#
+# -ldflags "-X main.build=" sets a build number to the build timestamp (UTC)
+# build number is available from /health request
 
-RUN go build
-RUN chmod +x passgen
+RUN go build -ldflags "-X main.build=`date -u +%Y%m%d.%H%M%S`.UTC"
+RUN ls -al
+RUN chmod +x passgend
 
-ENV DEFAULT_API_PORT=:8080
 ENV GIN_MODE=debug
+ENV DEFAULT_API_PORT=:8080
 
-CMD ./passgen
+CMD ./passgend
 EXPOSE 8080
