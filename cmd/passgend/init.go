@@ -40,10 +40,10 @@ func setAPIListeningPort() {
 
 func loadConfigFile() {
 	if _, err := os.Stat(ConfigFile); os.IsNotExist(err) {
-		log.Error("Config file " + ConfigFile + " does not exist.")
+		log.Debug("Config file " + ConfigFile + " does not exist.")
 	} else {
 		if _, err := toml.DecodeFile(ConfigFile, &config); err != nil {
-			log.Error("Error parsing " + ConfigFile)
+			log.Debug("Error loading or parsing the file: " + ConfigFile)
 			//to consider: load defaultConfig in case of errors with the file
 		} else {
 			log.Info("Config file " + ConfigFile + " loaded successfully")
