@@ -85,7 +85,7 @@ func Generate(params Setting) string {
 
 	// it may happen (and is allowed) that the number of required digits, specials,
 	// lowers, uppers is higher than the minimum length, then the new mininum is the sum of lenghts
-	log.Info("min required length: ", minLen, ", lenth of the required params: ", paramsLen)
+	log.Debug("min required length: ", minLen, ", lenth of the required params: ", paramsLen)
 
 	rand.Seed(time.Now().UTC().UnixNano())
 
@@ -106,7 +106,7 @@ func Generate(params Setting) string {
 	charsMix = append(charsMix, lowerLetters...)
 	charsMix = append(charsMix, upperLetters...)
 
-	log.Info("concatenated (pre-shuffled & pre-reviewed): ", string(charsMix), " [length: ", len(string(charsMix)), "]")
+	log.Debug("concatenated (pre-shuffled & pre-reviewed): ", string(charsMix), " [length: ", len(string(charsMix)), "]")
 
 	if minLen > paramsLen {
 		gapSize := int(minLen - paramsLen)
@@ -116,19 +116,19 @@ func Generate(params Setting) string {
 			gap[i] = allChars[rand.Intn(len(allChars))]
 		}
 
-		log.Info("gap: ", string(gap), " [length: ", len(string(gap)), "]")
+		log.Debug("gap: ", string(gap), " [length: ", len(string(gap)), "]")
 		charsMix = append(charsMix, gap...)
-		log.Info("with the gap: ", string(charsMix), " [length: ", len(string(charsMix)), "]")
+		log.Debug("with the gap: ", string(charsMix), " [length: ", len(string(charsMix)), "]")
 	}
 
-	log.Info("concatenated (pre-shuffled): ", string(charsMix), " [length: ", len(string(charsMix)), "]")
+	log.Debug("concatenated (pre-shuffled): ", string(charsMix), " [length: ", len(string(charsMix)), "]")
 
 	//shuffle
 	for i := range charsMix {
 		j := rand.Intn(i + 1)
 		charsMix[i], charsMix[j] = charsMix[j], charsMix[i]
 	}
-	log.Info("final (shuffled) password: ", string(charsMix), " [length: ", len(string(charsMix)), "]")
+	log.Debug("final (shuffled) password: ", string(charsMix), " [length: ", len(string(charsMix)), "]")
 
 	return string(charsMix)
 }
@@ -142,7 +142,7 @@ func randChars(subsetLen int, characters CharsSet) CharsSet {
 		res[i] = characters[rand.Intn(len(characters))]
 	}
 
-	log.Info("Select ", subsetLen, " chars from ", int(len(characters)), " characters: ", string(characters), " RESULT: ", string(res))
+	log.Debug("Select ", subsetLen, " chars from ", int(len(characters)), " characters: ", string(characters), " RESULT: ", string(res))
 	return res
 }
 

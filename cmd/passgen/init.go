@@ -9,46 +9,43 @@ import (
 	"os"
 
 	"github.com/BurntSushi/toml"
-	"github.com/gin-gonic/gin"
 	"github.com/rafalgolarz/passgen/pkg/passwords"
 	"github.com/sirupsen/logrus"
 )
 
 const (
-	ConfigFile = "passgen.toml"
+	DefaultConfigFile = "passgen.toml"
 	//PasswortType refers to the section name in the ConfigFile
 	PasswordType = "default"
 )
 
 func setLoggingLevel() {
-	if gin.Mode() == "release" {
-		//for production log only: Error, Fatal and Panic.
-		log.SetLevel(logrus.ErrorLevel)
-	} else {
-		//for non-production log: Debug, Info, Warning, Error, Fatal and Panic
-		log.SetLevel(logrus.DebugLevel)
-	}
+	//for production log only: Error, Fatal and Panic.
+	//for non-production log: Debug, Info, Warning, Error, Fatal and Panic
+	log.SetLevel(logrus.ErrorLevel)
 }
 
-//get the default port from environmental variables
-func setAPIListeningPort() {
-	port = os.Getenv("DEFAULT_API_PORT")
-	if port == "" {
-		port = ":8080"
-	}
-}
+func loadConfigFile(cmdConfigPath string) {
 
-func loadConfigFile() {
-	if _, err := os.Stat(ConfigFile); os.IsNotExist(err) {
-		log.Error("Config file " + ConfigFile + " does not exist.")
+	var configFile string
+	if _, err := os.Stat(cmdConfigPath); os.IsNotExist(err) {
+		log.Debug("Config file " + cmdConfigPath + " does not exist.")
 	} else {
-		if _, err := toml.DecodeFile(ConfigFile, &config); err != nil {
-			log.Error("Error parsing " + ConfigFile)
-			//to consider: load defaultConfig in case of errors with the file
-		} else {
-			log.Info("Config file " + ConfigFile + " loaded successfully")
-		}
+		configFile = cmdConfigPath
 	}
+
+	if _, err := os.Stat(DefaultConfigFile); os.IsNotExist(err) {
+		log.Debug("Default config file " + DefaultConfigFile + " does not exist.")
+	} else {
+		configFile = DefaultConfigFile
+	}
+
+	if _, err := toml.DecodeFile(configFile, &config); err != nil {
+		log.Error("Error parsing " + configFile)
+	} else {
+		log.Info("Config file " + configFile + " loaded successfully")
+	}
+
 }
 
 // url/cli params that are not passed, will be initialised with default config settings

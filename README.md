@@ -11,7 +11,7 @@
 
 [![asciicast](https://asciinema.org/a/141109.png)](https://asciinema.org/a/141109?speed=2)
 
-## Configurarion
+## Configuration
 
 **default.toml** stores minimum default required settings for generated passwords
 
@@ -43,7 +43,7 @@ passwordType = "default"
 
 Each of the params can be overwritten from the url.
 
-## Running
+## Running as a server
 
 I recommend to use docker:
 
@@ -70,7 +70,7 @@ Next, open the url:
 
 <http://localhost:8080/v1/passwords>
 
-By default, it generates one password meeting criteria defined in config.toml but you can overwrite any of the params.
+By default, it generates one password meeting criteria defined in passgen.toml but you can overwrite any of the params.
 
 Generate 3 passwords:
 
@@ -84,6 +84,18 @@ Generate 20 passwords. Each of the passwords should have:
 - minimum 4 lower and 4 upper case letters
 
 <http://localhost:8080/v1/passwords/?min-length=25&min-specials=2&min-digits=2&min-lowers=4&min-uppers=4&res=20>
+
+
+## Running as a command line app
+
+```!/bin/bash
+go install github.com/rafalgolarz/passgen/cmd/passgen
+passgen
+```
+
+that will install it as an executable file in your $GOBIN directory.
+
+If you don't have $GOBIN path set up, check out $GOPATH/bin
 
 ## Running tests
 
@@ -141,6 +153,5 @@ If you deployed it to the production namespace, open the url for production:
 
 ## TODO
 
-- [ ] allow passing the path to config.toml from the command line
 - [ ] display just array of passwords (hide configuration info) by setting a new boolean param verbose to false
 - [ ] add tests checking if the length of required subsets of characters match passed values
