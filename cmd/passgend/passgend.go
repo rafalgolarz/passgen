@@ -34,7 +34,6 @@ func generatePassword(c *gin.Context) {
 
 	var params passwords.Setting
 
-	initParams(&params, config)
 	err := c.BindQuery(&params)
 	passwords.CheckErr(err)
 

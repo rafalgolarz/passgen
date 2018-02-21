@@ -27,24 +27,18 @@ func setLoggingLevel() {
 
 func loadConfigFile(cmdConfigPath string) {
 
-	var configFile string
-
-	if cmdConfigPath != "" {
+	if cmdConfigPath != DefaultConfigFile {
 		if _, err := os.Stat(cmdConfigPath); os.IsNotExist(err) {
 			log.Error("Config file " + cmdConfigPath + " does not exist.")
-		} else {
-			configFile = cmdConfigPath
 		}
 	} else if _, err := os.Stat(DefaultConfigFile); os.IsNotExist(err) {
 		log.Debug("Default config file " + DefaultConfigFile + " does not exist.")
-	} else {
-		configFile = DefaultConfigFile
 	}
 
-	if _, err := toml.DecodeFile(configFile, &config); err != nil {
-		log.Debug("Error loading or parsing the file: " + configFile)
+	if _, err := toml.DecodeFile(cmdConfigPath, &config); err != nil {
+		log.Debug("Error loading or parsing the file: " + cmdConfigPath)
 	} else {
-		log.Info("Config file " + configFile + " loaded successfully")
+		log.Info("Config file " + cmdConfigPath + " loaded successfully")
 	}
 
 }
