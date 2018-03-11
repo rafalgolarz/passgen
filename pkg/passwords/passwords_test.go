@@ -6,7 +6,12 @@
  */
 package passwords
 
-import "testing"
+import (
+	"sync"
+	"testing"
+)
+
+var wg sync.WaitGroup
 
 func BenchmarkGenerator(b *testing.B) {
 	var defaultParams, strongParams, superStrong Setting
@@ -16,9 +21,12 @@ func BenchmarkGenerator(b *testing.B) {
 	defaultParams.MinLowercase = 1
 	defaultParams.MinUppercase = 1
 
+	wg.Add(b.N)
+
 	for i := 0; i < b.N; i++ {
-		Generate(defaultParams)
+		Generate(defaultParams, &wg)
 	}
+	wg.Wait()
 
 	strongParams.MinLength = 16
 	strongParams.MinSpecialCharacters = 4
@@ -26,10 +34,13 @@ func BenchmarkGenerator(b *testing.B) {
 	strongParams.MinLowercase = 2
 	strongParams.MinUppercase = 2
 
+	wg.Add(b.N)
 	for i := 0; i < b.N; i++ {
-		Generate(strongParams)
+		Generate(strongParams, &wg)
 	}
+	wg.Wait()
 
+	wg.Add(b.N)
 	superStrong.MinLength = 255
 	superStrong.MinSpecialCharacters = 100
 	superStrong.MinDigits = 50
@@ -37,6 +48,7 @@ func BenchmarkGenerator(b *testing.B) {
 	superStrong.MinUppercase = 20
 
 	for i := 0; i < b.N; i++ {
-		Generate(superStrong)
+		Generate(superStrong, &wg)
 	}
+	wg.Wait()
 }

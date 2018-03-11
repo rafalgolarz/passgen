@@ -7,10 +7,13 @@ package passwords
 
 import (
 	"math/rand"
+	"sync"
 	"time"
 
 	"github.com/sirupsen/logrus"
 )
+
+type PasswordsList map[int]string
 
 const (
 	AbsoluteMinLen = 8
@@ -26,8 +29,11 @@ var (
 // Have fun experimenting
 // uint8 is the set of all unsigned 8-bit integers. Range: 0 through 255. You won't need more...
 // uint16. Range: 0 through 65535. works really well on my machine.
-// uint32. Range: 0 through 4294967295 ...but this one may kill your memory
+// uint32. Range: 0 through 4294967295
 type UnsignedInt uint8
+
+//let's keep MAX_RESULTS as a bigger number than numbers allowed in params
+type MAX_RESULTS = uint16
 
 //CharsSet definition
 //rune as actualy an alias for the type int32
@@ -40,7 +46,7 @@ type Setting struct {
 	MinDigits            UnsignedInt `toml:"min_digits" form:"min-digits"`
 	MinLowercase         UnsignedInt `toml:"min_lowercase" form:"min-lowers"`
 	MinUppercase         UnsignedInt `toml:"min_uppercase" form:"min-uppers"`
-	Results              UnsignedInt `toml:"results" form:"res"`
+	Results              MAX_RESULTS `toml:"results" form:"res"`
 }
 
 //Settings map a section name to settings
@@ -74,8 +80,9 @@ var AllowedChars = runes{
 var log = logrus.New()
 
 // Generate returns a password built based on passed requirements
-func Generate(params Setting) string {
+func Generate(params Setting, wg *sync.WaitGroup) string {
 
+	defer wg.Done()
 	minLen := params.MinLength
 	minSpecials := params.MinSpecialCharacters
 	minDigits := params.MinDigits
@@ -166,8 +173,15 @@ func CheckParams(params Setting, passwordType string) bool {
 	return true
 }
 
+//yeap, everyone needs that
 func CheckErr(err error) {
 	if err != nil {
 		log.Error(err)
 	}
+}
+
+//used in verbose mode
+func MaxResults() MAX_RESULTS {
+	return ^MAX_RESULTS(0)
+
 }

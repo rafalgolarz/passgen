@@ -38,7 +38,7 @@ func loadConfigFile(cmdConfigPath string) {
 	if _, err := toml.DecodeFile(cmdConfigPath, &config); err != nil {
 		log.Debug("Error loading or parsing the file: " + cmdConfigPath)
 	} else {
-		log.Info("Config file " + cmdConfigPath + " loaded successfully")
+		log.Debug("Config file " + cmdConfigPath + " loaded successfully")
 	}
 
 }

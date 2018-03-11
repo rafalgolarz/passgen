@@ -10,6 +10,7 @@ package main
 
 import (
 	"net/http"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rafalgolarz/passgen/pkg/passwords"
@@ -20,6 +21,7 @@ var (
 	log    = logrus.New()
 	port   string
 	config passwords.Settings
+	wg     sync.WaitGroup
 )
 
 func init() {
@@ -38,14 +40,24 @@ func generatePassword(c *gin.Context) {
 	passwords.CheckErr(err)
 
 	numberOfResults := int(params.Results)
-	passwordsList := make([]string, numberOfResults)
+	ps := make(passwords.PasswordsList, numberOfResults)
+
 	if passwords.CheckParams(params, PasswordType) {
+		wg.Add(numberOfResults)
+		var mutex = &sync.Mutex{}
+
 		for i := 0; i < numberOfResults; i++ {
-			passwordsList[i] = passwords.Generate(params)
+			go func(i int, ps passwords.PasswordsList) {
+				mutex.Lock()
+				ps[i] = passwords.Generate(params, &wg)
+				mutex.Unlock()
+			}(i, ps)
 		}
 
+		wg.Wait()
+
 		c.JSON(http.StatusOK, gin.H{
-			"passwords":      passwordsList,
+			"passwords":      ps,
 			"status":         "Success",
 			"default_config": passwords.DefaultConfig,
 			"applied_config": params})
