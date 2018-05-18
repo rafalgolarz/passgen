@@ -1,7 +1,6 @@
 FROM golang:1.10
 LABEL maintainer="web@rafalgolarz.com"
-FROM golang:1.10
-LABEL maintainer="web@rafalgolarz.com"
+
 COPY cmd/passgend/  /go/src/github.com/rafalgolarz/passgen/cmd/passgend/
 COPY pkg/  /go/src/github.com/rafalgolarz/passgen/pkg/
 COPY vendor/ /go/src/
